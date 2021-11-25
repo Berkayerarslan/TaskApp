@@ -1,0 +1,48 @@
+﻿@page
+@model TaskApp.Pages.WaitAssignment.AddEmployeeModel
+@{
+}
+<form method="post">
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>Konu</th>
+                <th>Açıklama</th>
+                <th>Açılış Tarihi</th>
+                <th>Zorluk Derecesi</th>
+                <th>Önem Derecesi</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @* form içerisinden birden fazla veri gönderdiğimizde index mekanizmasını kullanırız. bu sebep ile foreach yerine for kullandık *@
+            @for (int i = 0; i < Model.Tickets.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <label>@Model.Tickets[i].Subject</label>
+                    </td>
+                    <td>
+                        <label>@Model.Tickets[i].Description</label>
+                    </td>
+                    <td>
+                        <label>@Model.Tickets[i].Priortiy</label>
+                    </td>
+                    <td>
+                        <label>@Model.Tickets[i].Rank</label>
+                    </td>
+                    <td>
+                        <select asp-for="SelectedEmployeeId" asp-items="Model.SelectListItems">
+                        </select>
+                    </td>
+                    <td>
+                        <input type="submit" value="Save" asp-page-handler="Save" asp-route-id="@Model.Tickets[i].Id" />
+
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+</form>

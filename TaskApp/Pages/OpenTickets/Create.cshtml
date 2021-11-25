@@ -1,0 +1,53 @@
+﻿@page
+@model TaskApp.Pages.OpenTickets.CreateModel
+@{
+}
+@*<ul>
+    @foreach (var item in Model.Tickets)
+    {
+        <li>Konu : @item.Subject Açıklama : @item.Description Tarih : @item.OpenTime.ToShortDateString()
+            <button>
+            <a asp-page="SetTechDetail" asp-route-id="@item.Id"></a> 
+            </button>
+    
+    <a asp-page="SetTechDetail" asp-route-id="@item.Id"></a>        
+    </li>
+
+    
+
+    }
+
+</ul>*@
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <th>Konu</th>
+            <th>Açıklama</th>
+            <th>Açılış Tarihi</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @* form içerisinden birden fazla veri gönderdiğimizde index mekanizmasını kullanırız. bu sebep ile foreach yerine for kullandık *@
+        @for (int i = 0; i < Model.Tickets.Count; i++)
+        {
+            <tr>
+                <td>
+                    <label>@Model.Tickets[i].Subject</label>
+                </td>
+                <td>
+                    <label>@Model.Tickets[i].Description</label>
+                </td>
+                <td>
+                    <label>@Model.Tickets[i].OpenTime.ToShortDateString()</label>
+                </td>
+                <td>
+                    <a asp-page="/TicketTech/SetTechDetail" asp-route-id="@Model.Tickets[i].Id">Set Technical Details</a>
+                    
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

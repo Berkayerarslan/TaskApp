@@ -17,10 +17,12 @@ namespace TaskApp.Models
         Completed = 105
     }
 
+    
+
     public class Ticket
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        
+        public string EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public string CustomerId { get; set; }
         public Customer Customer { get; set; }
@@ -29,7 +31,7 @@ namespace TaskApp.Models
         public string Description { get; set; }
         public TicketStatus Status { get; set; }
         public short Rank { get; set; }
-        public short Priortiy { get; set; }
+        public string Priortiy { get; set; }
         public DateTime OpenTime { get; set; }
         public DateTime AssignedTime { get; set; }
         public DateTime ReviewTime { get; set; }

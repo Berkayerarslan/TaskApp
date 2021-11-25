@@ -4,15 +4,18 @@
 }
 <form method="post">
 
+    Konu :
     <input asp-for="TicketInput.Subject" />
     <span asp-validation-for="TicketInput.Subject"></span>
     <br><br />
+    Açıklama :
     <input asp-for="TicketInput.Description" />
     <span asp-validation-for="TicketInput.Description"></span>
     <br><br />
     <select asp-for="SelectedCustomerId" asp-items="Model.SelectListItems">
     </select>
     @*<div><input type="submit" asp-page-handler="" /></div>*@
+
 
 
 

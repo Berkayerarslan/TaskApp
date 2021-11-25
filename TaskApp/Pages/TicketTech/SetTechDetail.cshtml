@@ -1,0 +1,33 @@
+﻿@page "{id}"
+@model TaskApp.Pages.TicketTech.SetTechDetailModel
+@{
+}
+
+
+<div>
+    Konu : <label>@Model.TicketInput.Subject</label> 
+    Ticket Tarihi : <label>@Model.TicketInput.OpenTime.ToShortDateString()</label>
+    <br />
+    Açıklama : <label>@Model.TicketInput.Description</label>
+    <br />
+
+    Şirket : <label>@Model.CustomerName</label>
+             <br />
+             <br />
+</div>
+
+
+<form method="post">
+    Zorluk Derecesi :
+    @foreach (var priorty in Model.priorties)
+    {
+        <input type="radio" asp-for="Priorty" value="@priorty" />@priorty<br />
+    }
+    Önem Derecesi : 
+    @foreach (var rank in Model.ranks)
+    {
+        <input type="radio" asp-for="Rank" value="@rank" />@rank<br />
+        @*@Html.RadioButtonFor(X=> X.Rank,rank)*@
+    }
+<input type="submit" value="Save" asp-page-handler="Save" />
+</form>

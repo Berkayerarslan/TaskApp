@@ -22,7 +22,7 @@ namespace TaskApp.Repositories
 
         public List<Ticket> List()
         {
-            throw new NotImplementedException();
+            return _db.Ticket.ToList();
         }
 
         public void Add(Ticket ticket)
@@ -39,7 +39,8 @@ namespace TaskApp.Repositories
 
         public void Update(Ticket model)
         {
-            throw new NotImplementedException();
+            _db.Ticket.Update(model);
+            _db.SaveChanges();
         }
 
         public void Save()
