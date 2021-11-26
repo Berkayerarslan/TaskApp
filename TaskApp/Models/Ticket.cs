@@ -11,10 +11,12 @@ namespace TaskApp.Models
     public enum TicketStatus
     {
         Open = 101,
-        Assigned = 102,
-        Review = 103,
+        readyForAssignment = 102,
+        Assigned = 103,
+        
         Closed = 104,
-        Completed = 105
+        Review = 105,
+        Completed = 106
     }
 
     
@@ -31,7 +33,7 @@ namespace TaskApp.Models
         public string Description { get; set; }
         public TicketStatus Status { get; set; }
         public short Rank { get; set; }
-        public string Priortiy { get; set; }
+        public string Difficulty { get; set; }
         public DateTime OpenTime { get; set; }
         public DateTime AssignedTime { get; set; }
         public DateTime ReviewTime { get; set; }

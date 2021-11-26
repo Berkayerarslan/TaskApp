@@ -42,7 +42,7 @@ namespace TaskApp.Pages.WaitAssignment
         public void OnGet()
         {
 
-            Tickets = _ticketRepository.List().FindAll(x => x.Employee == null && x.Status == TicketStatus.Open && x.Priortiy != null && x.Rank != 0);
+            Tickets = _ticketRepository.List().FindAll(x => x.Employee == null && x.Status == TicketStatus.readyForAssignment);
             
             var Employees = _employeeRepository.List();
 
@@ -57,7 +57,7 @@ namespace TaskApp.Pages.WaitAssignment
         {
            
             _ticketService.TicketAddEmployee(_ticketRepository.Find(id),SelectedEmployeeId);
-            
+            OnGet();
         }
         
     }

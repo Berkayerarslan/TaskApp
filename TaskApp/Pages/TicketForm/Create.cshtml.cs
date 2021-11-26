@@ -51,6 +51,7 @@ namespace TaskApp.Pages
             {
                 _ticketService.AddTicket(TicketInput,SelectedCustomerId);
             }
+            OnGet();
         }
     }
 }

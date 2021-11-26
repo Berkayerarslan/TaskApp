@@ -19,9 +19,9 @@
 
 <form method="post">
     Zorluk Derecesi :
-    @foreach (var priorty in Model.priorties)
+    @foreach (var diffuculty in Model.Diffuculties)
     {
-        <input type="radio" asp-for="Priorty" value="@priorty" />@priorty<br />
+        <input type="radio" asp-for="Diffuculty" value="@diffuculty" />@diffuculty<br />
     }
     Önem Derecesi : 
     @foreach (var rank in Model.ranks)

@@ -34,8 +34,8 @@ namespace TaskApp.Pages.TicketTech
         //public List<short> priorties = new List<short>();
 
         [BindProperty,Required(ErrorMessage ="Seçim Yapýlmalý")]
-        public string Priorty { get; set; }
-        public string[] priorties = {"Çok Kolay","Kolay","Orta Zorlukta","Zor","Çok Zor"};
+        public string Diffuculty { get; set; }
+        public string[] Diffuculties = {"Çok Kolay","Kolay","Orta Zorlukta","Zor","Çok Zor"};
 
         [BindProperty,Required(ErrorMessage ="Seçim Yapýlmalý")]
         public short Rank { get; set; }
@@ -54,7 +54,7 @@ namespace TaskApp.Pages.TicketTech
             {
                 TicketInput = _ticketRepository.Find(id);
                 Customer = _customerRepository.Find(_ticketRepository.Find(id).CustomerId);
-                _ticketService.UpdateTicket(TicketInput,Priorty,Rank);
+                _ticketService.UpdateTicket(TicketInput,Diffuculty,Rank);
             }
 
            

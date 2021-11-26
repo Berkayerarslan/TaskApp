@@ -1,0 +1,41 @@
+﻿@page
+@model TaskApp.Pages.AssignedTasks.CloseModel
+@{
+}
+<form method="post">
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>Konu</th>
+                <th>Açıklana</th>
+                <th>Eklenen Çalışan</th>
+                <th>Eklenen Tarih</th>
+                <th>Seçim</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Tickets.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <label>@Model.Tickets[i].Subject</label>
+                    </td>
+                    <td>
+                        <label>@Model.Tickets[i].Description</label>
+                    </td>
+                    <td>
+                        <label>@Model.Employees[i].Name @Model.Employees[i].Surname</label>
+                    </td>
+                    <td>
+                        <label>@Model.Tickets[i].AssignedTime</label>
+                    </td>
+                    <td>
+                        <input type="submit" value="Close" asp-page-handler="Close" asp-route-id="@Model.Tickets[i].Id" />
+                    </td>
+
+                </tr>
+       }
+
+        </tbody>
+    </table>
+</form>

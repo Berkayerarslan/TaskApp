@@ -67,19 +67,20 @@ namespace TaskApp.Services
         }
 
 
-        public void UpdateTicket(Ticket ticket,string priorty,short rank)
+        public void UpdateTicket(Ticket ticket,string diffuculty,short rank)
         {
             if (rank == 0)
             {
                 throw new Exception("Rank default 0 olarak gönderilemez.");
             }
-            if (string.IsNullOrEmpty(priorty))
+            if (string.IsNullOrEmpty(diffuculty))
             {
                 throw new Exception("Priorty boş gönderilemez.");
             }
 
-            ticket.Priortiy = priorty;
+            ticket.Difficulty = diffuculty;
             ticket.Rank = rank;
+            ticket.Status = TicketStatus.readyForAssignment;
             _ticketRepository.Update(ticket);
         }
 
@@ -106,47 +107,49 @@ namespace TaskApp.Services
             int total = 0;
             int rankCount = 0;
             var tickets = _ticketRepository.List();
-            var hardTickets = tickets.FindAll(x => x.Priortiy == "Zor" && x.EmployeeId == employeeId);
-            var rankTickets = tickets.FindAll(x => x.EmployeeId == employeeId && (x.Rank == 4 || x.Rank == 5));
-            var myEmployeeTickets = tickets.FindAll(x => x.EmployeeId == employeeId);
+            var hardTickets = tickets.FindAll(x => x.Difficulty == "Zor" && x.EmployeeId == employeeId && x.Status !=TicketStatus.Completed);
+            hardTickets = hardTickets.FindAll(x => x.OpenTime >= DateTime.Now.AddMonths(-1));
             
             // Zor iş sayısı kontrolü yapılıyor
 
-            if (hardTickets.Count > 3)
+            if (hardTickets.Count >= 3)
             {
                 throw new Exception("Bir çalışana 3'ten fazla Zor iş eklenemez.");
             }
 
             // önem derecesi 4 5 veya olan işlerin çalışanın yapabileceğinden fazla mı kontrol edildi
+            var rankTickets = tickets.FindAll(x => x.EmployeeId == employeeId && (x.Rank == 4 || x.Rank == 5) && x.Status != TicketStatus.Completed);
 
             if (rankTickets.Count >= 4)
             {
                 throw new Exception("Önem derecesi 4 5 olan 4 adet ticket çalışana eklenebilir.");
             }
             rankCount += rankTickets.Count;
-            
+
 
             // Çalışanın işe ayıracağı vaktin yeni eklenicek ticketla beraber 160 saati aşıp aşmadığı kontrolü
+            var myEmployeeTickets = tickets.FindAll(x => x.EmployeeId == employeeId && x.Status != TicketStatus.Completed);
+            myEmployeeTickets.Add(ticket);
 
             foreach (var item in myEmployeeTickets)
             {
-                if (item.Priortiy == "Çok Kolay")
+                if (item.Difficulty == "Çok Kolay")
                 {
                     total += 8;
                 }
-                else if (item.Priortiy == "Kolay")
+                else if (item.Difficulty == "Kolay")
                 {
                     total += 16;
                 }
-                else if (item.Priortiy == "Orta Zorlukta")
+                else if (item.Difficulty == "Orta Zorlukta")
                 {
                     total += 24;
                 }
-                else if (item.Priortiy == "Zor")
+                else if (item.Difficulty == "Zor")
                 {
                     total += 32;
                 }
-                else if (item.Priortiy == "Çok Zor")
+                else if (item.Difficulty == "Çok Zor")
                 {
                     total += 40;
                 }
@@ -156,32 +159,40 @@ namespace TaskApp.Services
                 }
 
             }
-            if (ticket.Priortiy == "Çok Kolay")
-            {
-                total += 8;
-            }
-            else if (ticket.Priortiy == "Kolay")
-            {
-                total += 16;
-            }
-            else if (ticket.Priortiy == "Orta Zorlukta")
-            {
-                total += 24;
-            }
-            else if (ticket.Priortiy == "Zor")
-            {
-                total += 32;
-            }
-            else if (ticket.Priortiy == "Çok Zor")
-            {
-                total += 40;
-            }
-
             if (total > 160)
             {
                 throw new Exception("Toplam iş yükü 160 saati geçemez o yüzden bu iş ataması yapılamaz.");
             }
 
+        }
+
+        public void CloseTicket(Ticket ticket)
+        {
+            var tickets = _ticketRepository.List();
+            tickets = tickets.FindAll(x => x.EmployeeId == ticket.EmployeeId);
+            foreach (var item in tickets)
+            {
+                if (ticket.Rank < item.Rank)
+                {
+                    throw new Exception("Önem değeri daha fazla olan tasklar var o yüzden bu kapanamaz.");
+                }
+            }
+            
+            ticket.Status = TicketStatus.Closed;
+            ticket.ClosedTime = DateTime.Now;
+            _ticketRepository.Update(ticket);
+        }
+        public void ReviewTicket(Ticket ticket)
+        {
+            ticket.Status = TicketStatus.Review;
+            ticket.ReviewTime = DateTime.Now;
+            _ticketRepository.Update(ticket);
+        }
+        public void CompleteTicket(Ticket ticket)
+        {
+            ticket.Status = TicketStatus.Completed;
+            ticket.CompletedTime = DateTime.Now;
+            _ticketRepository.Update(ticket);
         }
     }
 }
